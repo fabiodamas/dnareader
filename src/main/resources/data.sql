@@ -1,0 +1,2 @@
+INSERT INTO SEQUENCE(dna_values) VALUES('{"dna": ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TGCCCA"] }');
+INSERT INTO SEQUENCE(dna_values) VALUES('{"dna": ["GTCACT", "TAGTGA", "AGCCTA", "CTADAT", "AGAAGG", "TTATGT"] }');
