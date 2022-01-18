@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HashMapConverter implements AttributeConverter<Map<String, Object>, String> {
@@ -35,7 +36,8 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
 
         Map<String, Object> customerInfo = null;
         try {
-            customerInfo =  objectMapper.readValue(customerInfoJSON, Map.class);
+            // customerInfo =  objectMapper.readValue(customerInfoJSON, Map.class);
+            customerInfo = objectMapper.readValue(customerInfoJSON, new TypeReference<Map<String, Object>>() {});
         } catch (final IOException e) {
             logger.error("JSON reading error", e);
         }
