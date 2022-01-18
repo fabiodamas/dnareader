@@ -3,66 +3,77 @@ package br.com.fabio.dnareader.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DnaUtilService {
+import org.springframework.stereotype.Service;
+
+@Service
+public class DnaUtilService implements IDnaUtilService{
   private static final Logger logger = LoggerFactory.getLogger(SequenceService.class);
 
   static final int DIMENSION = 6;
   static final String[] REPETITION = { "AAAA", "TTTT", "CCCC", "GGGG" };
 
+  @Override
   public boolean isSimianDiagonal(char[][] dnaMatrix) {
-    int contagem = 0;
-    String diagonal = "";
+    int count = 0;
 
     for (int k = 0; k < DIMENSION * 2; k++) {
+      StringBuilder diagonal = new StringBuilder();
+
       for (int j = 0; j <= k; j++) {
         int i = k - j;
         if (i < DIMENSION && j < DIMENSION) {
-          diagonal += dnaMatrix[i][j];
+          diagonal.append(dnaMatrix[i][j]);
         }
       }
+      count = diagonalCount(count, diagonal);
 
-      if (diagonal.length() >= 4) {
-        for (String repeticao : REPETITION) {
-          if (diagonal.contains(repeticao)) {
-            contagem++;
-          }
-        }
-      }
-
-      diagonal = "";
     }
 
-    logger.info("isSimioDiagonal: {}", contagem);
+    logger.info("Number of repeating diagonals:  {}", count);
 
-    return (contagem >= 2);
+    return (count >= 2);
 
   }
 
-  public boolean isSimianLine(char[][] dnaMatrix) {
-    int contagem = 0;
-    String linha = "";
-
-    for (char[] row : dnaMatrix) {
-      for (char num : row) {
-        linha += num;
-      }
-
+  private int diagonalCount(int contagem, StringBuilder diagonal) {
+    if (diagonal.length() >= 4) {
       for (String repeticao : REPETITION) {
-        if (linha.contains(repeticao)) {
+        if (diagonal.toString().contains(repeticao)) {
           contagem++;
         }
       }
-
-      linha = "";
     }
-
-    logger.info("isSimioLine, {}", contagem);
-
-    return (contagem >= 2);
+    return contagem;
   }
 
+  @Override
+  public boolean isSimianLine(char[][] dnaMatrix) {
+    int count = 0;
+
+    for (char[] row : dnaMatrix) {
+      StringBuilder line = new StringBuilder();
+
+      for (char num : row) {
+        line.append(num);
+
+      }
+
+      for (String repeticao : REPETITION) {
+        if (line.toString().contains(repeticao)) {
+          count++;
+        }
+      }
+
+    }
+
+    logger.info("Number of repeating lines:  {}", count);
+
+    return (count >= 2);
+  }
+
+  @Override
   public boolean isSimianColumn(char[][] dnaMatrix) {
-    int contagem = 0;
+    int count = 0;
 
     for (int i = 0; i < dnaMatrix.length; i++) {
       StringBuilder sb = new StringBuilder();
@@ -73,18 +84,19 @@ public class DnaUtilService {
 
       for (String repeticao : REPETITION) {
         if (sb.toString().contains(repeticao)) {
-          contagem++;
+          count++;
         }
       }
 
     }
 
-    logger.info("isSimianColumn, {}", contagem);
+    logger.info("Number of repeating columns: {}", count);
 
-    return (contagem >= 2);
+    return (count >= 2);
 
   }
 
+  @Override
   public char[][] assembleMatrix(String[] dnaSequence) {
     char[][] dnaMatrix = new char[DIMENSION][DIMENSION];
 
@@ -96,5 +108,10 @@ public class DnaUtilService {
 
     return dnaMatrix;
   }
+
+  @Override
+	public boolean isPropertiesSimian(char[][] dnaMatrix) {
+		return (isSimianLine(dnaMatrix) || isSimianDiagonal(dnaMatrix) || isSimianColumn(dnaMatrix));
+	}  
 
 }
