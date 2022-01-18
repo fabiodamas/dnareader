@@ -1,0 +1,3 @@
+INSERT INTO SEQUENCE(dna_values, dna_type) VALUES('{"dna": ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TGCCCA"] }', 'HUMAN');
+INSERT INTO SEQUENCE(dna_values, dna_type) VALUES('{"dna": ["GTCACT", "TAGTGA", "AGCCTA", "CTADAT", "AGAAGG", "TTATGT"] }', 'HUMAN');
+INSERT INTO SEQUENCE(dna_values, dna_type) VALUES('{"dna": ["GGGGGG", "AAAAAA", "AGCCTA", "CTADAT", "AGAAGG", "TTATGT"] }', 'SIMIAN');

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -23,10 +22,9 @@ public class DnaResourceTest {
 	private MockMvc mockMvc;
 	
 	@Test
-	public void deveriaDevolver200CasoJsonEstejaCorreto() throws Exception {
+	public void shouldReturnStatus200IfJsonIsCorrect() throws Exception {
 		URI uri = new URI("/api/simian");
-		// String json = "{\"email\":\"invalido@email.com\",\"senha\":\"123456\"}";
-    String json = "{ \"dna\": [ \"FABIO\", \"HENRIQUE\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"GGGGGG\" ]}";
+    String json = "{ \"dna\": [ \"AGAAGG\", \"AGAAGG\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"GGGGGG\" ]}";
 		
 		mockMvc
 		.perform(MockMvcRequestBuilders
@@ -37,4 +35,8 @@ public class DnaResourceTest {
 				.status()
 				.is(200));
 	}  
+
+
+	//   @GetMapping("/stats")
+
 }
