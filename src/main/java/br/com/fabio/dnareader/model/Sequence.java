@@ -18,12 +18,22 @@ public class Sequence {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Enumerated(EnumType.STRING)
+  DnaType dnaType;
+
   @Convert(converter = HashMapConverter.class)
   @Column(unique = true)
   private Map<String, Object> dnaValues;  
 
-  @Enumerated(EnumType.STRING)
-  private DnaType dnaType;
+
+
+  public DnaType getDnaType() {
+    return dnaType;
+  }
+
+  public void setDnaType(DnaType dnaType) {
+    this.dnaType = dnaType;
+  }
 
   public Sequence() {
 
