@@ -1,15 +1,7 @@
 package br.com.fabio.dnareader.model;
-import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Table(name = "sequence")
@@ -23,9 +15,7 @@ public class Sequence {
 
   @Convert(converter = HashMapConverter.class)
   @Column(unique = true)
-  private Map<String, Object> dnaValues;  
-
-
+  private Map<String, Object> dnaValues;
 
   public DnaType getDnaType() {
     return dnaType;

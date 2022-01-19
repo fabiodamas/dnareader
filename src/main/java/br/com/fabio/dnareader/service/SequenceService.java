@@ -1,24 +1,24 @@
 package br.com.fabio.dnareader.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import br.com.fabio.dnareader.dto.SequenceDto;
+import br.com.fabio.dnareader.model.DnaType;
+import br.com.fabio.dnareader.model.Sequence;
+import br.com.fabio.dnareader.repository.SequenceRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.fabio.dnareader.dto.SequenceDto;
-import br.com.fabio.dnareader.model.DnaType;
-import br.com.fabio.dnareader.model.Sequence;
-import br.com.fabio.dnareader.repository.SequenceRepository;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class SequenceService implements ISequenceService {
 
-	private SequenceRepository sequenceRepository;
-	private DnaUtilService dnaUtilService;
+	private final SequenceRepository sequenceRepository;
+	private final DnaUtilService dnaUtilService;
 
 	public SequenceService(DnaUtilService dnaUtilService, SequenceRepository sequenceRepository){
 		this.dnaUtilService =  dnaUtilService;
@@ -27,9 +27,7 @@ public class SequenceService implements ISequenceService {
 
 	@Override
 	public ResponseEntity<List<Sequence>> getAll() {
-		List<Sequence> items = new ArrayList<>();
-
-		sequenceRepository.findAll().forEach(items::add);
+		List<Sequence> items = sequenceRepository.findAll();
 
 		if (items.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -40,13 +38,13 @@ public class SequenceService implements ISequenceService {
 
 
 	@Override
-	public Sequence save(SequenceDto sequenceDto) {
+	public void save(SequenceDto sequenceDto) {
 		Sequence sequence = new Sequence(new HashMap<>());
 
 		sequence.getDnaValues().put("dna", sequenceDto.getDna());
 		sequence.setDnaType(getDnaType(sequenceDto));
 
-		return sequenceRepository.save(sequence);
+		sequenceRepository.save(sequence);
 	}
 
 	@Override
@@ -79,8 +77,9 @@ public class SequenceService implements ISequenceService {
 	}
 
 	@Override
-	public long calculateRatio() {
-		return countSimian() / countHuman();
+	public BigDecimal calculateRatio() {
+		return(countHuman() != 0) ? BigDecimal.valueOf(countSimian())
+				.divide(BigDecimal.valueOf(countHuman()), 2, RoundingMode.HALF_EVEN) : BigDecimal.ONE;
 	}
 
 	

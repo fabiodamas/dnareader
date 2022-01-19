@@ -1,17 +1,18 @@
 package br.com.fabio.dnareader.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import br.com.fabio.dnareader.dto.SequenceDto;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import br.com.fabio.dnareader.dto.SequenceDto;
-import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -81,79 +82,37 @@ public class SequenceServiceTest {
   }  
 
   @Test
-  public void shouldReturnTypeHuman() {
-    //public DnaType getDnaType(SequenceDto sequenceDto) {
-    assertEquals(true, true);
-  }
+  public void shouldReturnRatio2() {
+    SequenceDto sequenceDtoSimian1 = new SequenceDto();
+    SequenceDto sequenceDtoSimian2 = new SequenceDto();
 
-  @Test
-  public void shouldReturnTypeSimian() {
-    // public boolean isSimian(SequenceDto sequenceDto) {
-    assertEquals(true, true);
-  }
-    
-  
-  @Test
-  public void shouldSaveSequence() {
-    //public Sequence save(SequenceDto sequenceDto) {
-    assertEquals(true, true);
-  }
-  
-  @Test
-  public void shouldReturnRatio4() {
-    ArrayList<SequenceDto> sequenceDtoSimian = new ArrayList<>(); 
-    ArrayList<String[]> dnaSimian = new ArrayList<>(); 
-    AtomicInteger counterH = new AtomicInteger(-1);
-    AtomicInteger counterS = new AtomicInteger(-1);
+    String[] dnaSimian1 = { "AAAAAA", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
+    String[] dnaSimian2 = { "TTTTTT", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
+
+    sequenceDtoSimian1.setDna(dnaSimian1);
+    sequenceDtoSimian2.setDna(dnaSimian2);
+
+    service.save(sequenceDtoSimian1);
+    service.save(sequenceDtoSimian2);
 
 
-    sequenceDtoSimian.add(new SequenceDto());
-    sequenceDtoSimian.add(new SequenceDto());
-    sequenceDtoSimian.add(new SequenceDto());
-    sequenceDtoSimian.add(new SequenceDto());
-    sequenceDtoSimian.add(new SequenceDto());
+    SequenceDto sequenceDtoHuman1 = new SequenceDto();
 
-    dnaSimian.add(new String[] { "AAAAAA", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" });
-    dnaSimian.add(new String[] { "TTTTTT", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" });
-    dnaSimian.add(new String[] { "GGGGGG", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" });
-    dnaSimian.add(new String[] { "CCCCCC", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" });
+    String[] dnaHuman1 = { "AGAAGG",
+            "CATACT",
+            "TTATGT",
+            "CATGCT",
+            "CGCATA",
+            "GGCATA" };
 
-    sequenceDtoSimian.stream().forEach(sequenceDto -> {
-      sequenceDto.setDna(dnaSimian.get(counterS.getAndIncrement()));
-      service.save(sequenceDto);
-    });
-    
-    ArrayList<SequenceDto> sequenceDtoHuman = new ArrayList<>(); 
-    ArrayList<String[]> dnaHuman = new ArrayList<>(); 
+    sequenceDtoHuman1.setDna(dnaHuman1);
 
-    sequenceDtoHuman.add(new SequenceDto());
-    sequenceDtoHuman.add(new SequenceDto());
-
-    dnaHuman.add(new String[] { "AGAAGG",
-                      "CATACT",
-                      "TTATGT",
-                      "CATGCT",
-                      "CGCATA",
-                      "GGCATA" });
-                      
-    dnaHuman.add(new String[] { "AGAAGG",
-                      "AGTTGG",
-                      "TTATGT",
-                      "CATAGT",
-                      "CACCTA",
-                      "AGCATA" });
+    service.save(sequenceDtoHuman1);
 
 
-    sequenceDtoHuman.stream().forEach(sequenceDto -> {
-      sequenceDto.setDna(dnaHuman.get(counterH.getAndIncrement()));
-      service.save(sequenceDto);
-    });
+    assertEquals(new BigDecimal(2).setScale(2, RoundingMode.HALF_EVEN), service.calculateRatio());
 
 
-   System.out.println(service.countHuman()); 
-   System.out.println(service.countSimian()); 
-
-    assertEquals(true, true);
   }
   
  
