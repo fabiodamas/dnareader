@@ -1,9 +1,9 @@
-package br.com.fabio.dnareader.config.validacao;
+package br.com.fabio.dnareader.config.validation;
 
 public class ErrorMessage {
-	
-	private String campo;
-	private String mensagem;
+
+	private final  String campo;
+	private final  String mensagem;
 	
 	public ErrorMessage(String field, String error) {
 		this.campo = field;
