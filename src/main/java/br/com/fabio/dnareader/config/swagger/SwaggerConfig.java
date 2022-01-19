@@ -12,23 +12,23 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("br.com.fabio.dnareader.resource"))
-                // .paths(PathSelectors.ant("/foos/*"))
-                .build()
+                .apis(RequestHandlerSelectors.basePackage("br.com.fabio.dnareader.resource")).build()
                 .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
         .title("DNA Reader")
-        .description("Technical test for a back-end developer job on Mercado Livre.")
+        .description("Technical test for a back-end developer job on Mercado Livre. " +
+                     "The purpose of the REST API is to implement a service for verifying a DNA sequence." +
+                     "The API checks whether the DNA is from an ape or a human." +
+                     "Is also returned the ratio of apes to the human population.")
         .version("1.0.0")
-        .license("Apache License Version 2.0")
-        .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
         .contact(new Contact("Fábio Henrique Gonçalves Damas", "https://fabiodamas.github.io", "fabio.damas@gmail.com"))
         .build();
     }
