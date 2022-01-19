@@ -19,7 +19,8 @@ import java.util.List;
 @RequestMapping("/api")
 public class DnaResource {
 
-  SequenceService sequenceService;
+  private final SequenceService sequenceService;
+
 
   public DnaResource(SequenceService sequenceService) {
     this.sequenceService = sequenceService;
@@ -35,16 +36,26 @@ public class DnaResource {
     map.put("is_simian", sequenceService.isSimian(sequenceDto));
     
     return ResponseEntity.status(HttpStatus.OK).body(map);
- }
+  }
 
-  @GetMapping("/stats")
-  public ResponseEntity<List<Sequence>> getAll() {
+  @GetMapping("/listAll")
+  public ResponseEntity<List<Sequence>> listAll() {
     return sequenceService.getAll();
   }
 
-  @PostMapping("/isSimioLine")
-  public Boolean isSimioLine(@RequestBody SequenceDto sequenceDto) {
+  @GetMapping("/stats")
+  public ResponseEntity<HashMap<String, Object>>  stats() {
+    HashMap<String, Object> map = new HashMap<>();
 
+    map.put("count_simian_dna", sequenceService.countSimian());
+    map.put("count_human_dna", sequenceService.countHuman());
+    map.put("ratio", sequenceService.calculateRatio());
+
+    return ResponseEntity.status(HttpStatus.OK).body(map);
+  }
+
+  @PostMapping("/isSimianLine")
+  public Boolean isSimianLine(@RequestBody SequenceDto sequenceDto) {
     return sequenceService.isSimian(sequenceDto);
   }
 
