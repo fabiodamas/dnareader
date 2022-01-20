@@ -9,7 +9,6 @@ public class Home {
   
   @GetMapping("/")
   public String home() {
-      // return "redirect:/swagger-ui.html";
       return "redirect:/swagger-ui/index.html";
   }
 
