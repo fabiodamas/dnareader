@@ -1,36 +1,38 @@
 package br.com.fabio.dnareader.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.util.Map;
+import br.com.fabio.dnareader.model.Dna;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import br.com.fabio.dnareader.model.Sequence;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class SequenceRepositoryTest {
 
   @Autowired
-  private SequenceRepository sequenceRepository;
+  private DnaRepository dnaRepository;
 
   @Test
   public void deveriaSalvarUmaSequenciaDeDna() {
 
-    Sequence sequence = new Sequence();
+    Dna sequence = new Dna();
 
     String[] dna = new String[] { "AAAAAA", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
-    Map<String, Object> dnaValues = new java.util.HashMap<String, Object>();
+    Map<String, Object> dnaValues = new java.util.HashMap<>();
     dnaValues.put("dna", dna);
 
     sequence.setDnaValues(dnaValues);
 
-    Long id = sequenceRepository.save(sequence).getId();
+    Long id = dnaRepository.save(sequence).getId();
 
-    Sequence sequenceSaved = sequenceRepository.findById(id).get();
+    Dna sequenceSaved = dnaRepository.findById(id).orElse(fail());
 
     assertEquals(sequenceSaved.getDnaValues().get("dna"), dnaValues.get("dna"));
   }

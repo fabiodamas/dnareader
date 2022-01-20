@@ -1,27 +1,25 @@
 package br.com.fabio.dnareader.dto;
 
 
-public class SequenceDto {
+import br.com.fabio.dnareader.dto.validations.DnaConstraint;
+
+public class DnaDto {
+
+	@DnaConstraint
 	private String[] dna;
 
-	
-	public SequenceDto() {
+	public DnaDto() {
 	}
 
-
-	public SequenceDto(String[] dna) {
+	public DnaDto(String[] dna) {
 		this.dna = dna;
 	}
-
 
 	public String[] getDna() {
 		return dna;
 	}
 
-
 	public void setDna(String[] dna) {
 		this.dna = dna;
 	}
-
-	
 }

@@ -1,11 +1,12 @@
 package br.com.fabio.dnareader.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Entity
-@Table(name = "sequence")
-public class Sequence {
+@Table(name = "dna")
+public class Dna {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -15,6 +16,8 @@ public class Sequence {
 
   @Convert(converter = HashMapConverter.class)
   @Column(unique = true)
+  @NotNull
+  // @Size(min = 6)
   private Map<String, Object> dnaValues;
 
   public DnaType getDnaType() {
@@ -25,11 +28,11 @@ public class Sequence {
     this.dnaType = dnaType;
   }
 
-  public Sequence() {
+  public Dna() {
 
   }
 
-  public Sequence(Map<String, Object> dnaValues) {
+  public Dna(Map<String, Object> dnaValues) {
     this.dnaValues = dnaValues;
   }
 

@@ -1,6 +1,6 @@
 package br.com.fabio.dnareader.service;
 
-import br.com.fabio.dnareader.dto.SequenceDto;
+import br.com.fabio.dnareader.dto.DnaDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,30 +24,30 @@ public class SequenceServiceTest {
 
   @Test
   public void shouldReturn3Simion() {
-    SequenceDto sequenceDto1 = new SequenceDto();
-    SequenceDto sequenceDto2 = new SequenceDto();
-    SequenceDto sequenceDto3 = new SequenceDto();
+    DnaDto dnaDto1 = new DnaDto();
+    DnaDto dnaDto2 = new DnaDto();
+    DnaDto dnaDto3 = new DnaDto();
 
     String[] dna1 = { "AAAAAA", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
     String[] dna2 = { "TTTTTT", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
     String[] dna3 = { "GGGGGG", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
 
-    sequenceDto1.setDna(dna1);
-    sequenceDto2.setDna(dna2);
-    sequenceDto3.setDna(dna3);
+    dnaDto1.setDna(dna1);
+    dnaDto2.setDna(dna2);
+    dnaDto3.setDna(dna3);
 
-    service.save(sequenceDto1);
-    service.save(sequenceDto2);
-    service.save(sequenceDto3);
+    service.save(dnaDto1);
+    service.save(dnaDto2);
+    service.save(dnaDto3);
     
     assertEquals(3, service.countSimian());
   }  
 
   @Test
   public void shouldReturn3Human() {
-    SequenceDto sequenceDto1 = new SequenceDto();
-    SequenceDto sequenceDto2 = new SequenceDto();
-    SequenceDto sequenceDto3 = new SequenceDto();
+    DnaDto dnaDto1 = new DnaDto();
+    DnaDto dnaDto2 = new DnaDto();
+    DnaDto dnaDto3 = new DnaDto();
 
     String[] dna1 = { "AGAAGG",
                       "CATACT",
@@ -70,33 +70,33 @@ public class SequenceServiceTest {
                       "CCACTA",
                       "CGAATA" };
 
-    sequenceDto1.setDna(dna1);
-    sequenceDto2.setDna(dna2);
-    sequenceDto3.setDna(dna3);
+    dnaDto1.setDna(dna1);
+    dnaDto2.setDna(dna2);
+    dnaDto3.setDna(dna3);
 
-    service.save(sequenceDto1);
-    service.save(sequenceDto2);
-    service.save(sequenceDto3);
+    service.save(dnaDto1);
+    service.save(dnaDto2);
+    service.save(dnaDto3);
     
     assertEquals(3, service.countHuman());
   }  
 
   @Test
   public void shouldReturnRatio2() {
-    SequenceDto sequenceDtoSimian1 = new SequenceDto();
-    SequenceDto sequenceDtoSimian2 = new SequenceDto();
+    DnaDto dnaDtoSimian1 = new DnaDto();
+    DnaDto dnaDtoSimian2 = new DnaDto();
 
     String[] dnaSimian1 = { "AAAAAA", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
     String[] dnaSimian2 = { "TTTTTT", "CCCCCC", "TTATGT", "AGAAGG", "CCCCTA", "GGGGGG" };
 
-    sequenceDtoSimian1.setDna(dnaSimian1);
-    sequenceDtoSimian2.setDna(dnaSimian2);
+    dnaDtoSimian1.setDna(dnaSimian1);
+    dnaDtoSimian2.setDna(dnaSimian2);
 
-    service.save(sequenceDtoSimian1);
-    service.save(sequenceDtoSimian2);
+    service.save(dnaDtoSimian1);
+    service.save(dnaDtoSimian2);
 
 
-    SequenceDto sequenceDtoHuman1 = new SequenceDto();
+    DnaDto dnaDtoHuman1 = new DnaDto();
 
     String[] dnaHuman1 = { "AGAAGG",
             "CATACT",
@@ -105,9 +105,9 @@ public class SequenceServiceTest {
             "CGCATA",
             "GGCATA" };
 
-    sequenceDtoHuman1.setDna(dnaHuman1);
+    dnaDtoHuman1.setDna(dnaHuman1);
 
-    service.save(sequenceDtoHuman1);
+    service.save(dnaDtoHuman1);
 
 
     assertEquals(new BigDecimal(2).setScale(2, RoundingMode.HALF_EVEN), service.calculateRatio());
