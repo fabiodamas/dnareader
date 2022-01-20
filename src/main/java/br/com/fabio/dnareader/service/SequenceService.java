@@ -1,9 +1,11 @@
 package br.com.fabio.dnareader.service;
 
-import br.com.fabio.dnareader.dto.SequenceDto;
+import br.com.fabio.dnareader.dto.DnaDto;
 import br.com.fabio.dnareader.model.DnaType;
-import br.com.fabio.dnareader.model.Sequence;
-import br.com.fabio.dnareader.repository.SequenceRepository;
+import br.com.fabio.dnareader.model.Dna;
+import br.com.fabio.dnareader.model.SimianResponse;
+import br.com.fabio.dnareader.model.StatsResponse;
+import br.com.fabio.dnareader.repository.DnaRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,73 +17,80 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class SequenceService implements ISequenceService {
+public class SequenceService {
 
-	private final SequenceRepository sequenceRepository;
-	private final DnaUtilService dnaUtilService;
+    private final DnaRepository dnaRepository;
+    private final DnaUtilService dnaUtilService;
 
-	public SequenceService(DnaUtilService dnaUtilService, SequenceRepository sequenceRepository){
-		this.dnaUtilService =  dnaUtilService;
-		this.sequenceRepository = sequenceRepository;
-	}
+    public SequenceService(DnaUtilService dnaUtilService, DnaRepository dnaRepository) {
+        this.dnaUtilService = dnaUtilService;
+        this.dnaRepository = dnaRepository;
+    }
 
-	@Override
-	public ResponseEntity<List<Sequence>> getAll() {
-		List<Sequence> items = sequenceRepository.findAll();
+    public ResponseEntity<List<Dna>> getAll() {
+        List<Dna> items = dnaRepository.findAll();
 
-		if (items.isEmpty())
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (items.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-		return new ResponseEntity<>(items, HttpStatus.OK);
+        return new ResponseEntity<>(items, HttpStatus.OK);
 
-	}
+    }
 
 
-	@Override
-	public void save(SequenceDto sequenceDto) {
-		Sequence sequence = new Sequence(new HashMap<>());
+    public SimianResponse save(DnaDto dnaDto) {
+        SimianResponse simianResponse = new SimianResponse();
+        Dna sequence = new Dna(new HashMap<>());
 
-		sequence.getDnaValues().put("dna", sequenceDto.getDna());
-		sequence.setDnaType(getDnaType(sequenceDto));
+        sequence.getDnaValues().put("dna", dnaDto.getDna());
 
-		sequenceRepository.save(sequence);
-	}
+        sequence.setDnaType(getDnaType(dnaDto));
 
-	@Override
-	public boolean isSimian(SequenceDto sequenceDto) {
-		char[][] dnaMatrix = dnaUtilService.assembleMatrix(sequenceDto.getDna());
+        dnaRepository.save(sequence);
 
-		return dnaUtilService.isPropertiesSimian(dnaMatrix);
+        simianResponse.setValue(isSimian(dnaDto));
 
-	}
+        return simianResponse;
+    }
 
-	@Override
-	public DnaType getDnaType(SequenceDto sequenceDto) {
-		char[][] dnaMatrix = dnaUtilService.assembleMatrix(sequenceDto.getDna());
+    public boolean isSimian(DnaDto dnaDto) {
+        char[][] dnaMatrix = dnaUtilService.assembleMatrix(dnaDto.getDna());
 
-		return dnaUtilService.isPropertiesSimian(dnaMatrix) ? DnaType.SIMIAN : DnaType.HUMAN;
-	}
+        return dnaUtilService.isPropertiesSimian(dnaMatrix);
 
-	@Override
-	public long countSimian() {
-    Sequence sequenceFind = new Sequence();
-    sequenceFind.setDnaType(DnaType.SIMIAN);
-		return sequenceRepository.count( Example.of(sequenceFind) );
-	}
+    }
 
-	@Override
-	public long countHuman() {
-    Sequence sequenceFind = new Sequence();
-    sequenceFind.setDnaType(DnaType.HUMAN);
-		return sequenceRepository.count( Example.of(sequenceFind) );
-	}
+    public DnaType getDnaType(DnaDto dnaDto) {
+        char[][] dnaMatrix = dnaUtilService.assembleMatrix(dnaDto.getDna());
 
-	@Override
-	public BigDecimal calculateRatio() {
-		return(countHuman() != 0) ? BigDecimal.valueOf(countSimian())
-				.divide(BigDecimal.valueOf(countHuman()), 2, RoundingMode.HALF_EVEN) : BigDecimal.ONE;
-	}
+        return dnaUtilService.isPropertiesSimian(dnaMatrix) ? DnaType.SIMIAN : DnaType.HUMAN;
+    }
 
-	
+    public long countSimian() {
+        Dna sequenceFind = new Dna();
+        sequenceFind.setDnaType(DnaType.SIMIAN);
+        return dnaRepository.count(Example.of(sequenceFind));
+    }
+
+    public long countHuman() {
+        Dna sequenceFind = new Dna();
+        sequenceFind.setDnaType(DnaType.HUMAN);
+        return dnaRepository.count(Example.of(sequenceFind));
+    }
+
+    public BigDecimal calculateRatio() {
+        return (countHuman() != 0) ? BigDecimal.valueOf(countSimian())
+                .divide(BigDecimal.valueOf(countHuman()), 2, RoundingMode.HALF_EVEN) : BigDecimal.ONE;
+    }
+
+    public StatsResponse getStatsResponse() {
+        StatsResponse statsResponse = new StatsResponse();
+
+        statsResponse.setCountHuman(countHuman());
+        statsResponse.setCountSimian(countSimian());
+        statsResponse.setRatio(calculateRatio());
+
+        return statsResponse;
+    }
 
 }
