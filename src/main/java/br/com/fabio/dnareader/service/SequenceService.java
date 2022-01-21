@@ -79,8 +79,8 @@ public class SequenceService {
     }
 
     public BigDecimal calculateRatio() {
-        return (countHuman() != 0) ? BigDecimal.valueOf(countSimian())
-                .divide(BigDecimal.valueOf(countHuman()), 2, RoundingMode.HALF_EVEN) : BigDecimal.ONE;
+        return BigDecimal.valueOf(countSimian())
+                .divide(BigDecimal.valueOf(countHuman()), 2, RoundingMode.HALF_EVEN);
     }
 
     public StatsResponse getStatsResponse() {
