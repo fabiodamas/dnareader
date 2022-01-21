@@ -1,16 +1,18 @@
 package br.com.fabio.dnareader.service;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-public class DnaUtilServiceTest {
+@ActiveProfiles("test")
+class DnaUtilServiceTest {
 
   private DnaUtilService service;
 
@@ -20,7 +22,7 @@ public class DnaUtilServiceTest {
   }
 
   @Test
-  public void shouldFindSimianByColumn() {
+  void shouldFindSimianByColumn() {
     String[] dna = {  "ATGGGG",
                       "ACCCCC",
                       "AAGGGT",
@@ -34,7 +36,7 @@ public class DnaUtilServiceTest {
   }
 
   @Test
-  public void shouldFindSimianByDiagonal() {
+  void shouldFindSimianByDiagonal() {
     String[] dna = {  "ACGAGG",
                       "CGAGGT",
                       "CAGGGT",
@@ -48,7 +50,7 @@ public class DnaUtilServiceTest {
   }
 
   @Test
-  public void shouldFindSimianByLine() {
+  void shouldFindSimianByLine() {
     String[] dna = {  "AAAAGG",
                       "CCCCGT",
                       "CAGGGT",
@@ -62,7 +64,7 @@ public class DnaUtilServiceTest {
   }
 
   @Test
-  public void shouldAssembleMatrixTwoDimension() {
+  void shouldAssembleMatrixTwoDimension() {
     String[] dna1Dimension = {  "AAAAAA",
                       "CCCCGT",
                       "CAGGGT",

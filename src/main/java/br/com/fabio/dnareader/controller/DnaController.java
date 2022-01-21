@@ -1,7 +1,6 @@
-package br.com.fabio.dnareader.resource;
+package br.com.fabio.dnareader.controller;
 
 import br.com.fabio.dnareader.dto.DnaDto;
-import br.com.fabio.dnareader.model.Dna;
 import br.com.fabio.dnareader.model.SimianResponse;
 import br.com.fabio.dnareader.model.StatsResponse;
 import br.com.fabio.dnareader.service.SequenceService;
@@ -10,16 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 @CrossOrigin(origins = "*")
-public class DnaResource {
+public class DnaController {
 
   private final SequenceService sequenceService;
 
-  public DnaResource(SequenceService sequenceService) {
+  public DnaController(SequenceService sequenceService) {
     this.sequenceService = sequenceService;
   }
 
@@ -36,12 +34,6 @@ public class DnaResource {
             sequenceService.getStatsResponse()
     );
   }
-
-  @GetMapping("/listAll")
-  public ResponseEntity<List<Dna>> listAll() {
-    return sequenceService.getAll();
-  }
-
 
 
 }

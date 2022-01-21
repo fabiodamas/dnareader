@@ -24,6 +24,12 @@ public class ErrorValidationHandler {
     }
 
     @ResponseStatus(code = HttpStatus.CONFLICT)
+    @ExceptionHandler(java.lang.ArithmeticException.class)
+    public ErrorMessage HumanZero(ArithmeticException e) {
+        return new ErrorMessage("Ratio", "É necessário no mínimo 1 DNA humano para o cálculo do ratio");
+    }
+
+    @ResponseStatus(code = HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorMessage handleConflict(DataIntegrityViolationException e) {
         return new ErrorMessage("DNA", "DNA já cadastrado na base de dados");

@@ -17,7 +17,6 @@ public class Dna {
   @Convert(converter = HashMapConverter.class)
   @Column(unique = true)
   @NotNull
-  // @Size(min = 6)
   private Map<String, Object> dnaValues;
 
   public DnaType getDnaType() {

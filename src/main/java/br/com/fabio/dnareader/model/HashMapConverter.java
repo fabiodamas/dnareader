@@ -1,16 +1,14 @@
 package br.com.fabio.dnareader.model;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.persistence.AttributeConverter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.AttributeConverter;
+import java.io.IOException;
+import java.util.Map;
 
 public class HashMapConverter implements AttributeConverter<Map<String, Object>, String> {
 
@@ -19,30 +17,29 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String convertToDatabaseColumn(Map<String, Object> customerInfo) {
+    public String convertToDatabaseColumn(Map<String, Object> dnaInfo) {
 
-        String customerInfoJson = null;
+        String dnaInfoJson = null;
         try {
-            customerInfoJson = objectMapper.writeValueAsString(customerInfo);
+            dnaInfoJson = objectMapper.writeValueAsString(dnaInfo);
         } catch (final JsonProcessingException e) {
             logger.error("JSON writing error", e);
         }
 
-        return customerInfoJson;
+        return dnaInfoJson;
     }
 
     @Override
-    public Map<String, Object> convertToEntityAttribute(String customerInfoJSON) {
+    public Map<String, Object> convertToEntityAttribute(String dnaJson) {
 
-        Map<String, Object> customerInfo = null;
+        Map<String, Object> dnaInfo = null;
         try {
-            // customerInfo =  objectMapper.readValue(customerInfoJSON, Map.class);
-            customerInfo = objectMapper.readValue(customerInfoJSON, new TypeReference<Map<String, Object>>() {});
+            dnaInfo = objectMapper.readValue(dnaJson, new TypeReference<Map<String, Object>>() {});
         } catch (final IOException e) {
             logger.error("JSON reading error", e);
         }
 
-        return customerInfo;
+        return dnaInfo;
     }
 
 
