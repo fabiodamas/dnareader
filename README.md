@@ -29,7 +29,7 @@ A seguir um exemplo da resposta:
  
 * Swagger:
 Para uma melhor visualização dos enpoints, acesse a documentação da API pelo Swagger:
- http://ec2-54-221-88-1.compute-1.amazonaws.com:8080/swagger-ui.html
+ http://ec2-54-221-88-1.compute-1.amazonaws.com:8080
 
 ## Tecnologias 
 * Desenvolvimento: Spring Boot, Java 11
