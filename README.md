@@ -1,5 +1,7 @@
 # DNAReader
 Teste técnico para vaga de desenvolvedor back-end no Mercado Livre.
+TESTE1
+
 
 API REST que identifica se uma sequência de DNA pertence a um humano ou a um símio.
 
